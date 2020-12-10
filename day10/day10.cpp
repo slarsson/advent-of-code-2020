@@ -44,43 +44,14 @@ int main()
     std::sort(numbers.begin(), numbers.end());
     numbers.push_back(numbers[numbers.size() - 1] + 3);
 
-    long int tot = 1;
-    int range = 0;
-    int prev = 0;
-    for (auto it = numbers.begin(); it != numbers.end(); ++it)
+    std::map<int, long int> n_ways;
+    n_ways[0] = 1;  
+    for (int i : numbers)
     {
-        int diff = *it - prev;
-        prev = *it;
-
-        // assume diff = 2 never happends :)
-        if (diff >= 3)
-        {
-            if (range > 1)
-            {
-                if (range == 2)
-                {
-                    tot *= 2;
-                }
-                else if (range == 3)
-                {
-                    tot *= 4; // every 3-group has 4 possible combinations
-                }
-                else
-                {
-                    tot *= (4 + (range - 1));
-                }
-            }
-            
-            range = 0;
-        }
-        else
-        {
-            ++range;
-        }
-
-        *it = diff;
+        n_ways[i] = n_ways[i - 1] + n_ways[i - 2] + n_ways[i - 3];
     }
 
-    std::cout << "b: " << tot << std::endl;
+    std::cout << "b: " << n_ways[numbers[numbers.size() - 1]] << std::endl;
+
     return 0;
 }
